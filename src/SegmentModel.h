@@ -15,7 +15,7 @@ public:
     QVector<Segment> segments() const { return m_segments; }
 
     int rowCount(const QModelIndex & = {}) const override;
-    int columnCount(const QModelIndex & = {}) const override { return 5; }
+    int columnCount(const QModelIndex & = {}) const override { return 6; }
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;

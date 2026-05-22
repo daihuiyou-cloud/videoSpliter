@@ -29,14 +29,14 @@ void SegmentModel::setSegmentDuration(int seconds) {
 void SegmentModel::setStatus(int row, const QString &status) {
     if (row < 0 || row >= m_segments.size()) return;
     m_segments[row].status = status;
-    auto idx = index(row, 4);
+    auto idx = index(row, 5);
     emit dataChanged(idx, idx);
 }
 
 void SegmentModel::clearStatuses() {
     for (auto &s : m_segments) s.status = "-";
     if (!m_segments.isEmpty())
-        emit dataChanged(index(0, 4), index(m_segments.size()-1, 4));
+        emit dataChanged(index(0, 5), index(m_segments.size()-1, 5));
 }
 
 void SegmentModel::rebuild() {
@@ -67,20 +67,21 @@ QVariant SegmentModel::data(const QModelIndex &index, int role) const {
         case 0: return index.row() + 1;
         case 1: return seg.start;
         case 2: return seg.end;
-        case 3: return seg.name;
-        case 4: return seg.status;
+        case 3: return secsToHMS(hmsToSecs(seg.end) - hmsToSecs(seg.start));
+        case 4: return seg.name;
+        case 5: return seg.status;
     }
     return {};
 }
 
 QVariant SegmentModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (role != Qt::DisplayRole || orientation != Qt::Horizontal) return {};
-    static const char *headers[] = {"#", "开始", "结束", "名称", "状态"};
+    static const char *headers[] = {"#", "开始时间", "结束时间", "时长", "名称", "状态"};
     return headers[section];
 }
 
 bool SegmentModel::setData(const QModelIndex &index, const QVariant &value, int role) {
-    if (role != Qt::EditRole || index.column() != 3) return false;
+    if (role != Qt::EditRole || index.column() != 4) return false;
     m_segments[index.row()].name = value.toString();
     emit dataChanged(index, index);
     return true;
@@ -88,6 +89,6 @@ bool SegmentModel::setData(const QModelIndex &index, const QVariant &value, int 
 
 Qt::ItemFlags SegmentModel::flags(const QModelIndex &index) const {
     auto f = QAbstractTableModel::flags(index);
-    if (index.column() == 3) f |= Qt::ItemIsEditable;
+    if (index.column() == 4) f |= Qt::ItemIsEditable;
     return f;
 }

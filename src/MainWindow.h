@@ -9,6 +9,7 @@ class QTableView;
 class QPushButton;
 class QLabel;
 class QSpinBox;
+class QStackedWidget;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -41,6 +42,8 @@ private:
     QPushButton *m_startBtn;
     QPushButton *m_cancelBtn;
     QLabel *m_statusLabel;
+    QLabel *m_segmentCountLabel;
+    QStackedWidget *m_segmentsStack;
     QWidget *m_titleBar;
 
     SegmentModel *m_model;
@@ -48,4 +51,6 @@ private:
 
     bool   m_dragging = false;
     QPoint m_dragPos;
+
+    void updateSegmentSummary();
 };
